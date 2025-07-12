@@ -31,7 +31,12 @@ const CreateTrip = () => {
       return;
     }
 
-    if (!data?.location || !data?.noOfDays || !data?.budget || !data?.traveller) {
+    if (
+      !data?.location ||
+      !data?.noOfDays ||
+      !data?.budget ||
+      !data?.traveller
+    ) {
       toast.error("Please fill all the fields before generating the trip.");
       setIsLoading(false);
       return;
@@ -55,7 +60,9 @@ const CreateTrip = () => {
       navigate(`/view-trip/${tripId}`);
     } catch (error) {
       console.error(error);
-      toast.error("Failed to generate trip. Try again.", { id: toastId });
+      toast.error(error.message || "Failed to generate trip. Try again.", {
+        id: toastId,
+      });
     }
 
     setIsLoading(false);
@@ -85,7 +92,6 @@ const CreateTrip = () => {
           />
         </div>
 
-
         <div>
           <h3 className="text-lg sm:text-xl my-3 font-medium">
             How many days are you planning your trip?
@@ -102,7 +108,9 @@ const CreateTrip = () => {
         </div>
 
         <div>
-          <h3 className="text-lg sm:text-xl my-3 font-medium">What is your budget?</h3>
+          <h3 className="text-lg sm:text-xl my-3 font-medium">
+            What is your budget?
+          </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {BudgetOptions.map((option, idx) => (
               <CardOption

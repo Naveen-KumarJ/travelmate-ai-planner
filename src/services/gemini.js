@@ -93,13 +93,21 @@ A JSON object with:
       ],
     });
 
-    const text = response.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!text) throw new Error("No content received from Gemini.");
+    const text = response?.candidates?.[0]?.content?.parts?.[0]?.text;
+    
+    if (!text || text.includes("503") || text.toLowerCase().includes("unavailable")) {
+      throw new Error("Gemini API is overloaded or returned an empty response.");
+    }
 
     const cleaned = text.replace(/```json|```/g, "").trim();
     return JSON.parse(cleaned);
+
   } catch (err) {
     console.error("Gemini Error:", err);
-    throw new Error("Failed to parse Gemini response.");
+    throw new Error(
+      err.message.includes("503")
+        ? "Gemini API is currently overloaded. Please try again in a few minutes."
+        : "Failed to generate a valid trip response."
+    );
   }
 };
