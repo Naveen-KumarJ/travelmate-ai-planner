@@ -70,7 +70,7 @@ const Header = () => {
 
           <div className="relative">
             <img
-              src={user.photoURL}
+              src={user.photoURL || "/default-avatar.png" }
               alt="User Avatar"
               className="w-9 aspect-square rounded-full border-2 border-gray-300 cursor-pointer"
               onClick={() => setLogoutVisible(!logoutVisible)}
