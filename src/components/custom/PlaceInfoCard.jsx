@@ -9,11 +9,40 @@ const PlaceInfoCard = ({ title, data }) => {
 
   useEffect(() => {
     setLoading(true);
-    fetchUnsplashPhoto(`${data.placeName} tourist spot`).then((url) => {
-      if (url) setImageUrl(url);
-      const timer = setTimeout(() => setLoading(false), 5000);
-      return () => clearTimeout(timer);
-    });
+    let didCancel = false;
+
+    const fetchImage = async () => {
+      const timer = setTimeout(() => {
+        if (!didCancel) {
+          setLoading(false);
+          setImageUrl("/placeholder.png");
+        }
+      }, 5000);
+
+      try {
+        const url = await fetchUnsplashPhoto(`${data.placeName} tourist spot`);
+        if (!didCancel) {
+          clearTimeout(timer);
+          if (url) {
+            setImageUrl(url);
+          } else {
+            setImageUrl("/placeholder.png");
+          }
+          setLoading(false);
+        }
+      } catch (err) {
+        if (!didCancel) {
+          clearTimeout(timer);
+          setImageUrl("/placeholder.png");
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchImage();
+    return () => {
+      didCancel = true;
+    };
   }, [data.placeName]);
 
   const mapLink = `https://www.google.com/maps/search/?api=1&query=${data.placeName}, ${data.address}`;
@@ -46,7 +75,9 @@ const PlaceInfoCard = ({ title, data }) => {
                 <p className="text-sm text-gray-600">{data.placeDetails}</p>
 
                 <div className="text-sm text-gray-700 space-y-1 pt-2">
-                  <p>🕒 {data.startTime} - {data.endTime || "N/A"}</p>
+                  <p>
+                    🕒 {data.startTime} - {data.endTime || "N/A"}
+                  </p>
                   {data.ticketPricing && <p>🎟️ {data.ticketPricing}</p>}
                   {data.nextSuggestedAction && (
                     <p className="italic text-gray-500">

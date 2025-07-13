@@ -8,12 +8,42 @@ const TripHistoryCard = ({ trip }) => {
 
   useEffect(() => {
     setLoading(true);
-    fetchUnsplashPhoto(`${trip.generatedTripDetails.correctedLocation} place`)
-      .then((url) => {
-        if (url) setImageUrl(url);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    let didCancel = false;
+
+    const fetchImage = async () => {
+      const timer = setTimeout(() => {
+        if (!didCancel) {
+          setLoading(false);
+          setImageUrl("/placeholder.png");
+        }
+      }, 5000);
+
+      try {
+        const url = await fetchUnsplashPhoto(
+          `${trip.generatedTripDetails.correctedLocation} place`
+        );
+        if (!didCancel) {
+          clearTimeout(timer);
+          if (url) {
+            setImageUrl(url);
+          } else {
+            setImageUrl("/placeholder.png");
+          }
+          setLoading(false);
+        }
+      } catch {
+        if (!didCancel) {
+          clearTimeout(timer);
+          setImageUrl("/placeholder.png");
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchImage();
+    return () => {
+      didCancel = true;
+    };
   }, [trip?.generatedTripDetails?.correctedLocation]);
 
   return (
@@ -25,7 +55,9 @@ const TripHistoryCard = ({ trip }) => {
           ) : (
             <img
               src={imageUrl}
-              alt={trip?.generatedTripDetails?.correctedLocation || "Trip Image"}
+              alt={
+                trip?.generatedTripDetails?.correctedLocation || "Trip Image"
+              }
               className="w-full h-full object-cover"
             />
           )}

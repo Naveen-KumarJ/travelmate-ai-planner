@@ -8,14 +8,30 @@ const InfoSection = ({ tripData }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!tripData?.generatedTripDetails?.correctedLocation) return;
+    const fetchImage = async () => {
+      if (!tripData?.generatedTripDetails?.correctedLocation) return;
 
-    setLoading(true);
-    fetchUnsplashPhoto(`${tripData.generatedTripDetails.correctedLocation} place`).then((url) => {
-      if (url) setImageUrl(url);
-      const timer = setTimeout(() => setLoading(false), 3000);
-      return () => clearTimeout(timer);
-    });
+      setLoading(true);
+
+      const timeoutId = setTimeout(() => {
+        setLoading(false);
+        setImageUrl("/placeholder.png");
+      }, 5000);
+
+      try {
+        const url = await fetchUnsplashPhoto(
+          `${tripData.generatedTripDetails.correctedLocation} place`
+        );
+        if (url) setImageUrl(url);
+      } catch (err) {
+        setImageUrl("/placeholder.png");
+      } finally {
+        clearTimeout(timeoutId);
+        setLoading(false);
+      }
+    };
+
+    fetchImage();
   }, [tripData?.generatedTripDetails?.correctedLocation]);
 
   const handleShare = () => {
@@ -42,6 +58,11 @@ const InfoSection = ({ tripData }) => {
           src={imageUrl}
           alt="Trip Visual"
           className="w-full h-[240px] sm:h-[340px] object-cover rounded-xl"
+          onLoad={() => setLoading(false)}
+          onError={() => {
+            setLoading(false);
+            setImageUrl("/placeholder.png");
+          }}
         />
       )}
 

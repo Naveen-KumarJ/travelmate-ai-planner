@@ -6,6 +6,9 @@ import { db } from "../services/firebase";
 import InfoSection from "../components/custom/InfoSection";
 import HotelSection from "../components/custom/HotelSection";
 import ItinerarySection from "../components/custom/ItinerarySection";
+import InfoSectionSkeleton from "../components/custom/Skeletons/InfoSectionSkeleton";
+import HotelSectionSkeleton from "../components/custom/Skeletons/HotelSectionSkeleton";
+import ItinerarySectionSkeleton from "../components/custom/Skeletons/ItinerarySectionSkeleton";
 
 const ViewTrip = () => {
   const { tripId } = useParams();
@@ -39,9 +42,19 @@ const ViewTrip = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
-      <InfoSection tripData={tripData} />
-      <HotelSection tripData={tripData} />
-      <ItinerarySection tripData={tripData} />
+      {!tripData ? (
+        <>
+          <InfoSectionSkeleton />
+          <HotelSectionSkeleton />
+          <ItinerarySectionSkeleton />
+        </>
+      ) : (
+        <>
+          <InfoSection tripData={tripData} />
+          <HotelSection tripData={tripData} />
+          <ItinerarySection tripData={tripData} />
+        </>
+      )}
     </div>
   );
 };
