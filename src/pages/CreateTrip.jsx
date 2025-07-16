@@ -143,7 +143,7 @@ const CreateTrip = () => {
           <Button
             disabled={isLoading}
             onClick={generateTrip}
-            className="cursor-pointer w-full sm:w-auto px-6 py-2 flex items-center justify-center gap-2 bg-[#6366f1] text-white hover:bg-[#4f46e5] rounded-md"
+            className="cursor-pointer w-full sm:w-auto px-6 py-2 flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white  rounded-md"
           >
             {isLoading ? (
               <>

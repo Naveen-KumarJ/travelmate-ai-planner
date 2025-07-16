@@ -3,6 +3,7 @@ import { Button } from "../components/ui/button";
 import { useAuth } from "../context/AuthContext";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../services/firebase";
+import { FaRocket } from "react-icons/fa";
 
 const Home = () => {
   const { user } = useAuth();
@@ -36,11 +37,12 @@ const Home = () => {
       </p>
 
       <Button
-        className="cursor-pointer mt-4 w-full sm:w-auto px-6 py-3 text-base sm:text-lg font-medium bg-[#6366f1] text-white hover:bg-[#4f46e5] rounded-lg"
-        onClick={handleStart}
-      >
-        Start Planning – It’s Free!
-      </Button>
+          className="mt-8 px-6 py-4 text-lg font-semibold cursor-pointer bg-indigo-600 hover:bg-indigo-700 text-white rounded flex items-center gap-2 transition-all duration-300 shadow-lg hover:scale-105"
+          onClick={handleStart}
+        >
+          <FaRocket className="text-white text-xl" />
+          Start Planning – It’s Free!
+        </Button>
     </section>
   );
 };

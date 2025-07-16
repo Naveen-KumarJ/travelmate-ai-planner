@@ -55,7 +55,7 @@ const Header = () => {
 
           <div className="flex gap-2 flex-wrap justify-center">
             <Button
-              className="bg-[#6366f1] text-white px-4 py-2 rounded-lg hover:bg-[#4f46e5] w-full sm:w-auto cursor-pointer"
+              className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg  w-full sm:w-auto cursor-pointer"
               onClick={() => navigate("/create-trip")}
             >
               + Create Trip
@@ -70,7 +70,7 @@ const Header = () => {
 
           <div className="relative">
             <img
-              src={user.photoURL || "/default-avatar.png" }
+              src={user.photoURL || "/default-avatar.png"}
               alt="User Avatar"
               className="w-9 aspect-square rounded-full border-2 border-gray-300 cursor-pointer"
               onClick={() => setLogoutVisible(!logoutVisible)}
@@ -89,7 +89,7 @@ const Header = () => {
         </div>
       ) : (
         <Button
-          className="cursor-pointer px-6 py-2 bg-[#6366f1] text-white rounded-lg hover:bg-[#4f46e5] w-full sm:w-auto"
+          className="cursor-pointer px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg  w-full sm:w-auto"
           onClick={handleLogin}
         >
           Sign In

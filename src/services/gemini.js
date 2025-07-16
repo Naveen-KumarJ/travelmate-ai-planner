@@ -29,7 +29,7 @@ Step 2: Generate a valid JSON object with the following **3 top-level keys only*
 2. "hotels": An array of 2–5 real, verified hotels near the corrected location. Each hotel object must include:
    - "hotelName"
    - "hotelAddress"
-   - "price"
+   - "price": Price per night as a string (e.g., "₹1500 per night", "₹2500 - ₹3500")
    - "rating"
    - "description"
    - "geoCoordinates": { "lat": number, "lng": number }
